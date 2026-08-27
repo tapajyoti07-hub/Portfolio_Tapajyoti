@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Details | Tapajyoti Nath</title>
+  <meta name="description" content="Detailed overview of project architecture, features, challenges, and key learnings by Tapajyoti Nath.">
+  <meta name="theme-color" content="#0b0b16">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <!-- Devicon Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    /* Scoped Project Detail Styles (complements & integrates with style.css) */
+    :root {
+      --bg-dark: #0b0b16;
+      --bg-card: rgba(18, 18, 42, 0.75);
+      --bg-card-hover: rgba(28, 28, 62, 0.85);
+      --primary: #7C5CFF;
+      --primary-rgb: 124, 92, 255;
+      --secondary: #00D4FF;
+      --secondary-rgb: 0, 212, 255;
+      --text-main: #f0f0f8;
+      --text-muted: #9494ad;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(124, 92, 255, 0.3);
+      --gradient-brand: linear-gradient(135deg, #7C5CFF 0%, #00D4FF 100%);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background glows */
+    .bg-glow-1 {
+      position: fixed;
+      top: -100px;
+      left: 15%;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(124, 92, 255, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-glow-2 {
+      position: fixed;
+      bottom: 10%;
+      right: 10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Simple Navbar */
+    .project-navbar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(11, 11, 22, 0.8);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 0;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-decoration: none;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      letter-spacing: -0.5px;
+      transition: transform 0.2s ease;
+    }
+
+    .brand-logo:hover {
+      transform: translateY(-1px);
+    }
+
+    .brand-logo .dot {
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.03);
+      transition: all 0.25s ease;
+    }
+
+    .nav-back-btn:hover {
+      color: #fff;
+      border-color: var(--primary);
+      background: rgba(124, 92, 255, 0.1);
+      transform: translateX(-3px);
+    }
+
+    /* Main Container */
+    .project-detail-wrapper {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Breadcrumbs */
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .breadcrumb-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .breadcrumb-nav a:hover {
+      color: var(--secondary);
+    }
+
+    .breadcrumb-separator {
+      opacity: 0.5;
+      font-size: 0.75rem;
+    }
+
+    .breadcrumb-current {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    /* Hero Banner */
+    .project-hero-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12px);
+      margin-bottom: 2rem;
+    }
+
+    .project-hero-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-brand);
+    }
+
+    .project-meta-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .category-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(124, 92, 255, 0.15);
+      color: #9d85ff;
+      border: 1px solid rgba(124, 92, 255, 0.3);
+    }
+
+    .project-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.2;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
+    .project-lead {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 850px;
+      line-height: 1.7;
+      margin-bottom: 1.75rem;
+    }
+
+    .tech-pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+
+    .tech-pill {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--secondary);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Buttons */
+    .project-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--gradient-brand);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(124, 92, 255, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(124, 92, 255, 0.5);
+      color: #ffffff;
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--primary);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn.disabled,
+    .btn[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* Content Sections Grid */
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .detail-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .detail-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+
+    .detail-card.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .section-heading {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .section-heading i {
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    .overview-text {
+      color: #d1d1e0;
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    /* Custom Unordered Lists */
+    .detail-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .detail-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      color: #d1d1e0;
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .detail-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55rem;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--secondary);
+      box-shadow: 0 0 8px var(--secondary);
+    }
+
+    .features-list li::before {
+      background: var(--secondary);
+      box-shadow: 0 0 8px var(--secondary);
+    }
+
+    .challenges-list li::before {
+      background: #ffaa40;
+      box-shadow: 0 0 8px #ffaa40;
+    }
+
+    .learned-list li::before {
+      background: #7C5CFF;
+      box-shadow: 0 0 8px #7C5CFF;
+    }
+
+    .improvements-list li::before {
+      background: #00e699;
+      box-shadow: 0 0 8px #00e699;
+    }
+
+    /* Bottom Navigation Bar */
+    .project-footer-nav {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    /* Error / Not Found State */
+    .not-found-container {
+      text-align: center;
+      padding: 5rem 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(12px);
+      margin: 2rem 0;
+    }
+
+    .not-found-icon {
+      font-size: 4rem;
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+    }
+
+    .not-found-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
+    .not-found-desc {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Site Footer */
+    .site-footer {
+      border-top: 1px solid var(--border-color);
+      padding: 2rem 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      background: rgba(11, 11, 22, 0.9);
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      .project-hero-card {
+        padding: 1.75rem 1.25rem;
+      }
+
+      .project-title {
+        font-size: 1.85rem;
+      }
+
+      .project-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .detail-card {
+        padding: 1.5rem;
+      }
+
+      .project-footer-nav {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <!-- Top Simple Navbar -->
+  <header class="project-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo" aria-label="Tapajyoti Nath Portfolio Home">
+        TN<span class="dot">.</span>
+      </a>
+      <a href="index.html#projects" class="nav-back-btn">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to Portfolio</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="project-detail-wrapper" id="projectDetail">
+    <!-- Populated dynamically via JavaScript -->
+    <div style="text-align: center; padding: 4rem 1rem;">
+      <i class="fas fa-circle-notch fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+      <p style="margin-top: 1rem; color: var(--text-muted);">Loading project details...</p>
+    </div>
+  </main>
+
+  <!-- Simple Footer -->
+  <footer class="site-footer">
+    <p>&copy; <span id="currentYear"></span> Tapajyoti Nath. Built with passion & clean code.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script>
+    // Utility to prevent XSS
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Set copyright year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('projectDetail');
+
+      // Check if configuration is loaded
+      if (typeof portfolioConfig === 'undefined' || !portfolioConfig.projects) {
+        renderNotFound("Portfolio configuration failed to load.");
+        return;
+      }
+
+      // Read ?id= from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectId = urlParams.get('id');
+
+      if (!projectId) {
+        renderNotFound("No project ID specified.");
+        return;
+      }
+
+      // Find matching project
+      const project = portfolioConfig.projects.find(
+        (p) => String(p.id).toLowerCase() === String(projectId).toLowerCase()
+      );
+
+      if (!project) {
+        renderNotFound(`Project "${escapeHTML(projectId)}" not found.`);
+        return;
+      }
+
+      // Update Page Title
+      document.title = `${project.title} | ${portfolioConfig.name || 'Tapajyoti Nath'}`;
+
+      // Render Project Details
+      renderProject(project);
+    });
+
+    function renderNotFound(message) {
+      const container = document.getElementById('projectDetail');
+      container.innerHTML = `
+        <div class="not-found-container">
+          <div class="not-found-icon">
+            <i class="fas fa-folder-open"></i>
+          </div>
+          <h1 class="not-found-title">Project Not Found</h1>
+          <p class="not-found-desc">${escapeHTML(message)} The requested project might have been moved or doesn't exist.</p>
+          <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+            <a href="index.html#projects" class="btn btn-primary">
+              <i class="fas fa-arrow-left"></i> Back to Projects
+            </a>
+            <a href="index.html" class="btn btn-outline">
+              <i class="fas fa-home"></i> Home
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderProject(project) {
+      const container = document.getElementById('projectDetail');
+
+      // Helper for list rendering
+      const renderList = (items, listClass) => {
+        if (!items || items.length === 0) {
+          return `<p style="color: var(--text-muted); font-style: italic;">No specific details listed.</p>`;
+        }
+        return `
+          <ul class="detail-list ${listClass}">
+            ${items.map(item => `<li>${escapeHTML(item)}</li>`).join('')}
+          </ul>
+        `;
+      };
+
+      // Tech tags pills
+      const techTags = (project.technologies || [])
+        .map(t => `<span class="tech-pill"><i class="fas fa-code"></i> ${escapeHTML(t)}</span>`)
+        .join('');
+
+      // GitHub link handling
+      const hasGithub = project.github && project.github !== '#' && project.github.trim() !== '';
+      const githubButton = hasGithub
+        ? `<a href="${escapeHTML(project.github)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+             <i class="fab fa-github"></i> View on GitHub
+           </a>`
+        : `<button class="btn btn-outline disabled" title="Source repository not available">
+             <i class="fab fa-github"></i> View on GitHub
+           </button>`;
+
+      // Demo link handling
+      const hasDemo = project.demo && project.demo !== '#' && project.demo.trim() !== '';
+      const demoButton = hasDemo
+        ? `<a href="${escapeHTML(project.demo)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+             <i class="fas fa-external-link-alt"></i> Live Demo
+           </a>`
+        : '';
+
+      const html = `
+        <!-- Breadcrumbs -->
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+          <a href="index.html"><i class="fas fa-home"></i> Home</a>
+          <span class="breadcrumb-separator"><i class="fas fa-chevron-right"></i></span>
+          <a href="index.html#projects">Projects</a>
+          <span class="breadcrumb-separator"><i class="fas fa-chevron-right"></i></span>
+          <span class="breadcrumb-current">${escapeHTML(project.title)}</span>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="project-hero-card">
+          <div class="project-meta-top">
+            <span class="category-badge">
+              <i class="fas fa-tag"></i> ${escapeHTML(project.category || 'General')}
+            </span>
+          </div>
+
+          <h1 class="project-title">${escapeHTML(project.title)}</h1>
+          
+          <p class="project-lead">${escapeHTML(project.shortDescription || project.fullDescription || '')}</p>
+
+          <div class="tech-pill-list">
+            ${techTags}
+          </div>
+
+          <div class="project-actions">
+            ${demoButton}
+            ${githubButton}
+            <a href="index.html#projects" class="btn btn-secondary">
+              <i class="fas fa-th-large"></i> Back to Projects
+            </a>
+          </div>
+        </header>
+
+        <!-- Structured Details Grid -->
+        <div class="detail-grid">
+          <!-- Overview Section -->
+          <section class="detail-card full-width">
+            <h2 class="section-heading">
+              <i class="fas fa-align-left"></i> Project Overview
+            </h2>
+            <div class="overview-text">
+              <p>${escapeHTML(project.fullDescription || project.shortDescription || 'No overview available.')}</p>
+            </div>
+          </section>
+
+          <!-- Features Section -->
+          <section class="detail-card">
+            <h2 class="section-heading">
+              <i class="fas fa-check-circle"></i> Key Features
+            </h2>
+            ${renderList(project.features, 'features-list')}
+          </section>
+
+          <!-- Challenges Section -->
+          <section class="detail-card">
+            <h2 class="section-heading">
+              <i class="fas fa-triangle-exclamation"></i> Challenges Faced
+            </h2>
+            ${renderList(project.challenges, 'challenges-list')}
+          </section>
+
+          <!-- What I Learned Section -->
+          <section class="detail-card">
+            <h2 class="section-heading">
+              <i class="fas fa-lightbulb"></i> What I Learned
+            </h2>
+            ${renderList(project.learned, 'learned-list')}
+          </section>
+
+          <!-- Future Improvements Section -->
+          <section class="detail-card">
+            <h2 class="section-heading">
+              <i class="fas fa-rocket"></i> Future Improvements
+            </h2>
+            ${renderList(project.futureImprovements, 'improvements-list')}
+          </section>
+        </div>
+
+        <!-- Bottom Navigation / Actions -->
+        <footer class="project-footer-nav">
+          <a href="index.html#projects" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i> Explore All Projects
+          </a>
+          <div class="project-actions">
+            ${demoButton}
+            ${githubButton}
+          </div>
+        </footer>
+      `;
+
+      container.innerHTML = html;
+    }
+  </script>
+</body>
+</html>

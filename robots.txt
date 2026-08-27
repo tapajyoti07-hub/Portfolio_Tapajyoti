@@ -1,0 +1,7 @@
+# Robots.txt for Tapajyoti Nath Portfolio
+# Replace YOUR-DOMAIN.com with your actual domain
+
+User-agent: *
+Allow: /
+
+Sitemap: https://YOUR-DOMAIN.com/sitemap.xml
